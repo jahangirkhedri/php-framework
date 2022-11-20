@@ -1,0 +1,104 @@
+version: "3"
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php:7.4-fpm
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+
+  #Mariadb Service
+  db:
+    image: mariadb:10.5
+    container_name: db
+    volumes:
+      - "dbdata:/var/lib/mysql"
+      - "./docker/mariadb/my.cnf:/etc/mysql/my.cnf"
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: root
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+      TZ: Asia/Tehran
+    networks:
+      - app-network
+
+  #Redis Service
+  redis:
+    container_name: redis
+    image: "redis:6.0.5-alpine"
+    ports:
+      - 6379:6379
+    volumes:
+      - "redisdata:/data"
+    networks:
+      - app-network
+
+  pma:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    networks:
+      - app-network
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 300M
+
+  rabbitmq:
+    image: rabbitmq:3.8.16-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASSWORD: guest
+      RABBITMQ_DEFAULT_VHOST: /
+    ports:
+      - 15671:15671
+      - 15672:15672
+      - 5671:5671
+      - 5672:5672
+    networks:
+      - app-network
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  dbdata:
+    driver: local
+  redisdata:
+    driver: local

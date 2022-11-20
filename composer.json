@@ -1,0 +1,15 @@
+{
+    "name": "root/www",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "jahangir khedri",
+            "email": "khedri.jahangir@gmail.com"
+        }
+    ],
+    "require": {}
+}
