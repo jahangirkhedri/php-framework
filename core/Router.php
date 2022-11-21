@@ -32,18 +32,21 @@ class Router
         $callback = $this->routes[$method][$path] ?? false;
         if ($callback === false) {
             $this->response->setStatusCode(404);
-            return $this->renderView("_404");
+            return $this->loadView("_404");
         }
         if (is_string($callback))
-            return $this->renderView($callback);
-        if(is_array($callback))
-            $callback[0]=new $callback[0]();
+            return $this->loadView($callback);
+        if (is_array($callback)) {
+            Application::$app->controller = new $callback[0]();
+            $callback[0] = Application::$app->controller;
+        }
 
-        return call_user_func($callback,$this->request);
+
+        return call_user_func($callback, $this->request);
 
     }
 
-    public function renderView($view, $params = [])
+    public function loadView($view, $params = [])
     {
         $layoutContent = $this->layoutContent();
         $viewContent = $this->renderOnlyView($view, $params);
@@ -58,15 +61,16 @@ class Router
 
     public function layoutContent()
     {
+        $layout = Application::$app->controller->layout;
         ob_start();
-        include_once Application::$ROOT_DIR . "/Views/layouts/main.php";
+        include_once Application::$ROOT_DIR . "/Views/layouts/$layout.php";
         return ob_get_clean();
     }
 
     public function renderOnlyView($view, $params)
     {
-        foreach ($params as $key=>$value){
-            $$key=$value;
+        foreach ($params as $key => $value) {
+            $$key = $value;
         }
         ob_start();
         include_once Application::$ROOT_DIR . "/Views/$view.php";

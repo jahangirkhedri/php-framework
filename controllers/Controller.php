@@ -6,9 +6,16 @@ use app\core\Application;
 
 class Controller
 {
-    public function render($view,$params=[])
+    public $layout = 'main';
+    public function load($view, $params = [])
     {
-        return Application::$app->router->renderView($view,$params);
+        return Application::$app->router->loadView($view, $params);
+    }
+
+    public function setLayout($layout)
+    {
+
+       $this->layout = $layout;
     }
 
 }

@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use app\controllers\Controller;
+
 class Application
 {
     public Router $router;
@@ -9,6 +11,7 @@ class Application
     public static string $ROOT_DIR;
     public Response $response;
     public static Application $app;
+    public Controller $controller;
     public function __construct($dirname)
     {
         self::$ROOT_DIR = $dirname;

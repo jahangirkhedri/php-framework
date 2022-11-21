@@ -11,7 +11,7 @@ class HomeController extends Controller
         $params = [
             'name' => 'jahan'
         ];
-        return $this->render('home',$params);
+        return $this->load('home',$params);
     }
 
 }

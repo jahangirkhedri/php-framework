@@ -1,6 +1,7 @@
 <?php
 ?>
-<h1>contact us</h1>
+<h1>Login</h1>
+
 <form action="" method="post">
     <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>

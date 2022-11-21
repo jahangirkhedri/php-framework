@@ -9,7 +9,7 @@ class ContactController extends Controller
 {
     public function createContact()
     {
-       return $this->render('contact');
+       return $this->load('contact');
     }
 
     public function SaveContact(Request $request)
