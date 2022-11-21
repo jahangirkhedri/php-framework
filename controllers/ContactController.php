@@ -1,16 +1,20 @@
 <?php
+
 namespace app\controllers;
 
 use app\core\Application;
+use app\core\Request;
 
-class ContactController
+class ContactController extends Controller
 {
     public function createContact()
     {
-        return Application::$app->router->renderView('contact');
+       return $this->render('contact');
     }
-    public function SaveContact()
+
+    public function SaveContact(Request $request)
     {
+        $body = $request->getBody();
         return "save Contact";
     }
 
