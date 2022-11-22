@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\core\Request;
+use app\Model\RegisterModel;
+
 class AuthController extends Controller
 {
     public function showLoginForm()
@@ -21,9 +24,18 @@ class AuthController extends Controller
         return $this->load('register');
     }
 
-    public function register()
+    public function register(Request $request)
     {
-        return "Register is complete.";
+        $errors = [];
+        $registerModel = new RegisterModel();
+        $registerModel->loadData($request->getBody());
+        if($registerModel->validate() && $registerModel->create()){
+            return 'success';
+        }
+
+        return $this->load('register', [
+            'model' => $registerModel
+        ]);
     }
 
 
