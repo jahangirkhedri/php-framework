@@ -55,17 +55,6 @@ services:
     networks:
       - app-network
 
-  #Redis Service
-  redis:
-    container_name: redis
-    image: "redis:6.0.5-alpine"
-    ports:
-      - 6379:6379
-    volumes:
-      - "redisdata:/data"
-    networks:
-      - app-network
-
   pma:
     depends_on:
       - db
@@ -79,20 +68,6 @@ services:
     environment:
       PMA_HOST: db
       UPLOAD_LIMIT: 300M
-
-  rabbitmq:
-    image: rabbitmq:3.8.16-management
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASSWORD: guest
-      RABBITMQ_DEFAULT_VHOST: /
-    ports:
-      - 15671:15671
-      - 15672:15672
-      - 5671:5671
-      - 5672:5672
-    networks:
-      - app-network
 #Docker Networks
 networks:
   app-network:
