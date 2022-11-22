@@ -3,7 +3,7 @@
 This is simple PHP framework like Laravel.
 
 
-##Usage
+## usage
 - docker-compose up -d
 - copy .env.example to .env
 - composer update
