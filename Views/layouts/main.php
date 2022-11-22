@@ -27,17 +27,38 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+        <?php
+        use app\core\Application;
+        if(Application::isGuest()):
+        ?>
             <li class="nav-item">
                 <a class="nav-link" href="/login">login</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/register">register</a>
             </li>
-
+        <?php
+       else:
+        ?>
+           <li class="nav-item">
+               <a class="nav-link" href="/logout">logout</a>
+           </li>
+        <?php
+        endif;
+        ?>
         </ul>
     </div>
 </nav>
 <div class="container">
+    <?php
+
+
+
+    if (Application::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success">
+            <p><?php echo Application::$app->session->getFlash('success') ?></p>
+        </div>
+    <?php endif; ?>
     {{content}}
 </div>
 </body>

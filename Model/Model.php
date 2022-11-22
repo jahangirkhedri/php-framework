@@ -43,19 +43,19 @@ abstract class Model
                     $ruleName = $rule[0];
                 }
                 if ($ruleName === self::RULE_REQUIRED && !$value)
-                    $this->addError($attribute, self::RULE_REQUIRED);
+                    $this->addErrorByRule($attribute, self::RULE_REQUIRED);
 
                 if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL))
-                    $this->addError($attribute, self::RULE_EMAIL);
+                    $this->addErrorByRule($attribute, self::RULE_EMAIL);
 
                 if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min'])
-                    $this->addError($attribute, self::RULE_MIN, $rule);
+                    $this->addErrorByRule($attribute, self::RULE_MIN, $rule);
 
                 if ($ruleName === self::RULE_MAX && strlen($value) < $rule['max'])
-                    $this->addError($attribute, self::RULE_MAX, $rule);
+                    $this->addErrorByRule($attribute, self::RULE_MAX, $rule);
 
                 if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']})
-                    $this->addError($attribute, self::RULE_MATCH, $rule);
+                    $this->addErrorByRule($attribute, self::RULE_MATCH, $rule);
 
                 if ($ruleName === self::RULE_UNIQUE) {
                     $className = $rule['class'];
@@ -106,6 +106,8 @@ abstract class Model
     {
         return self::ERORR_MESSAGES[$rule];
     }
+
+
 
 
 }
