@@ -9,3 +9,4 @@ This is simple PHP framework like Laravel.
 - composer update
 - Run migrations with run database/migrations.php
 - You can add your migration in this path  : "database/migrations/"
+
